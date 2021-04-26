@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ListPersons{% endblock %}
+
+{% block body %}
+    <h2>User</h2>
+
+    {% if user_list|length > 0 %}
+        +        <div>There are {{ user_list|length }} user_list.</div>
+        +
+        {% for user in user_list %}
+            {% if user.email %}
+            <td><a>{{ user.email }}</a></td>
+            <td>{{ user.firstname }}</td>
+            {% endif %}
+        {% endfor %}
+
+                {% if previous >= 0 %}
+                    <a href="{{ path('user', { id: users.id, offset: previous }) }}">Previous</a>
+                {% endif %}
+                {% if next < user_list|length %}
+                    <a href="{{ path('user', { id: users.id, offset: next }) }}">Next</a>
+                {% endif %}
+    {% else %}
+        <div>No user_list have been posted yet for this users.</div>
+    {% endif %}
+{% endblock %}

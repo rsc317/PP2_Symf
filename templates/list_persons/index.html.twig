@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LIST PERSONS{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/sidebars.css') }}"
+        {% endblock %}
+
+        {% block javascripts %}
+            <script src="{{ asset('js/sidebars.js') }}"></script>
+        {% endblock %}
+{% block body %}
+    <body>
+    {{ include('sidenav.html.twig') }}
+    <main>
+        <div class="container">
+            <br>
+            <table class="table table-bordered table-hover" style="width: 1408px;">
+                <th style="text-align: center; " colspan="3">
+                    <div class="th-inner ">LIST PERSONS</div>
+                    <div class="fht-cell"></div>
+                </th>
+                <tr>
+                    <th style="text-align: center">E-Mail</th>
+                    <th style="text-align: center">First Name</th>
+                    <th style="text-align: center">Given Name</th>
+                </tr>
+                {% for user in users %}
+                    <tr>
+                        <td><a href="">{{ user.email }}</a></td>
+                        <td>{{ user.firstname }}</td>
+                        <td>{{ user.givenname }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="fixed-table-pagination" style="">
+                <div class="float-left pagination">
+                    <ul class="pagination">
+                        {% if previous >= 0 %}
+                            <li class="page-item page-pre"><a class="page-link" aria-label="previous page" href="{{ path('list_persons', { offset: previous }) }}">Prev</a></li>
+                        {% endif %}
+                        {% if (offset/rop) > 3  %}
+                            <li class="page-item page-pre"><a class="page-link" aria-label="previous page" href="{{ path('list_persons', { offset: 0 }) }}">1</a></li>
+                            <li class="dots"><a class="page-link">...</a></li>
+                        {% endif %}
+                        <li class="page-item active"><a class="page-link"
+                                                        href="{{ path('list_persons', { offset: (offset/rop)}) }}"><?php echo $page ?>{{ (offset/rop) + 1 }}</a>
+                        </li>
+                        {% if next < users|length %}
+                            <li class="page-item page-next"><a class="page-link" aria-label="next page" href="{{ path('list_persons', { offset: next }) }}">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    </body>
+{% endblock %}
