@@ -1,20 +1,86 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SearchController!{% endblock %}
+{% block title %}Search{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/sidebars.css') }}"
+        {% endblock %}
 
+        {% block javascripts %}
+            <script src="{{ asset('js/sidebars.js') }}"></script>
+        {% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/duman/PhpstormProjects/Pp2sf/src/Controller/SearchController.php'|file_link(0) }}">src/Controller/SearchController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/duman/PhpstormProjects/Pp2sf/templates/search/index.html.twig'|file_link(0) }}">templates/search/index.html.twig</a></code></li>
-    </ul>
-</div>
+    {% if app.user %}
+        <body>
+        {{ include('sidenav.html.twig') }}
+        <main>
+            <div class="container">
+                <br>
+                <h1 class="mb-3">Search</h1>
+                <form name="searchForm" id="searchForm" method="post">
+                    {{ form_start(search) }}
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            {{ form_label(search.email, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(search.email, {'attr': {'class': 'form-control', 'placeholder' : 'Email'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {{ form_label(search.first_name, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(search.first_name, {'attr': {'class': 'form-control', 'placeholder' : 'Firstname'}}) }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ form_label(search.given_name, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(search.given_name, {'attr': {'class': 'form-control', 'placeholder' : 'Givenname'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {{ form_label(search.street_name, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(search.street_name, {'attr': {'class': 'form-control', 'placeholder' : 'Street'}}) }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ form_label(search.city, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(search.city, {'attr': {'class': 'form-control', 'placeholder' : 'City'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            {{ form_label(search.phone_number, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(search.phone_number, {'attr': {'class': 'form-control', 'placeholder' : 'Phonenumber'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            {{ form_label(search.search) }}
+                            {{ form_widget(search.search, {'attr': {'class': 'w-100 btn btn-primary btn-lg'}}) }}
+                        </div>
+                    </div>
+                    {{ form_end(search) }}
+                </form>
+                <br>
+                {% if users != null %}
+                <table class="table table-bordered table-hover" style="width: 1408px;">
+                    <th style="text-align: center; " colspan="3">
+                        <div class="th-inner ">Search Result</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <tr>
+                        <th style="text-align: center">E-Mail</th>
+                        <th style="text-align: center">First Name</th>
+                        <th style="text-align: center">Given Name</th>
+                    </tr>
+                    {% for user in users %}
+                        <tr>
+                            <td><a href="{{ path('details', { email: user.email }) }}">{{ user.email }}</a></td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.given_name }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                    {% endif %}
+            </div>
+        </main>
+        </body>
+    {% endif %}
 {% endblock %}

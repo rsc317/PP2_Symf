@@ -27,7 +27,7 @@ class ListPersonsController extends AbstractController
         }
 
         $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $userRepository->getCommentPaginator($offset);
+        $paginator = $userRepository->getUsersPaginator($offset);
 
         return new Response($this->twig->render('list_persons/index.html.twig', [
             'rop' => UserRepository::PAGINATOR_PER_PAGE,

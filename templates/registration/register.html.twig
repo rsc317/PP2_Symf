@@ -9,7 +9,6 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-
 <body class="text-center">
 <main class="form-signin">
     <form method="post">
@@ -17,7 +16,7 @@
         <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>
         <div class="form-floating">
             {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'sr-only'}}) }}
-            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder' : 'Email'}}) }}
+            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder' : 'Email', 'type': 'email'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.plainPassword, null, {'label_attr': {'class': 'sr-only'}})  }}

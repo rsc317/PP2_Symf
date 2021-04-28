@@ -39,26 +39,37 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    public function getCommentPaginator( int $offset): Paginator
+    public function getUsersPaginator(int $offset): Paginator
     {
         $query = $this->createQueryBuilder('u')
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(self::PAGINATOR_PER_PAGE)
             ->setFirstResult($offset)
+            ->getQuery();
+
+        return new Paginator($query);
+    }
+
+    public function findByEmailField($email)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.email = :val')
+            ->setParameter('val', $email)
             ->getQuery()
-       ;
+            ->getOneOrNullResult();
+    }
 
-       return new Paginator($query);
-   }
-
-    public function findByEmailField($email) {
-       return $this->createQueryBuilder('u')
-           ->andWhere('u.email = :val')
-           ->setParameter('val', $email)
-           ->getQuery()
-           ->getOneOrNullResult()
-           ;
-   }
+    public function searchByValueFields(array $values): array|int|string
+    {
+        $query = $this->createQueryBuilder('u');
+        foreach ($values as $key => $value) {
+            if (!is_null($value)) {
+                $query->orWhere("u.{$key} = :val")
+                    ->setParameter('val', $value);
+            }
+        }
+        return $query->getQuery()->getArrayResult();
+    }
 
     // /**
     //  * @return User[] Returns an array of User objects
