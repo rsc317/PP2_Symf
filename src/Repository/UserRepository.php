@@ -18,6 +18,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    public const PAGINATOR_PER_PAGE = 3;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -37,12 +39,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    public const PAGINATOR_PER_PAGE = 3;
-
     public function getCommentPaginator( int $offset): Paginator
     {
-        $query = $this->createQueryBuilder('c')
-            ->orderBy('c.id', 'ASC')
+        $query = $this->createQueryBuilder('u')
+            ->orderBy('u.id', 'ASC')
             ->setMaxResults(self::PAGINATOR_PER_PAGE)
             ->setFirstResult($offset)
             ->getQuery()
@@ -51,6 +51,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
        return new Paginator($query);
    }
 
+    public function findByEmailField($email) {
+       return $this->createQueryBuilder('u')
+           ->andWhere('u.email = :val')
+           ->setParameter('val', $email)
+           ->getQuery()
+           ->getOneOrNullResult()
+           ;
+   }
 
     // /**
     //  * @return User[] Returns an array of User objects

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Form\MainType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +14,12 @@ class MyDataController extends AbstractController
     #[Route('/mydata', name: 'mydata')]
     public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $authenticated_user = $this->getUser();
-        $form = $this->createForm(MainType::class, $authenticated_user);
+        $authenticatedUser = $this->getUser();
+        if($this->isGranted('ROLE_USER') == false) {
+            return $this->redirectToRoute('app_login');
+        }
+        $error = '';
+        $form = $this->createForm(MainType::class, $authenticatedUser);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $form->get('plainPassword')->getData();
@@ -34,9 +37,12 @@ class MyDataController extends AbstractController
             }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+            $error = "Update successfully";
         }
+
         return $this->render('main/index.html.twig', [
             'main' => $form->createView(),
+            'error' => $error,
         ]);
     }
 }

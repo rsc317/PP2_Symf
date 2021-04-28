@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Details{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/sidebars.css') }}"
+        {% endblock %}
+
+        {% block javascripts %}
+            <script src="{{ asset('js/sidebars.js') }}"></script>
+        {% endblock %}
+{% block body %}
+    <body>
+    {{ include('sidenav.html.twig') }}
+    <main>
+        <div class="container">
+            <br>
+            <h1>{{ user.firstname }}  {{ user.givenname }} Status: {{ user.roles[0] }}</h1>
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_HR" %}
+                            {{ form_label(details.email, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.email, {'attr': {'class': 'form-control'}}) }}
+                        {% else %}
+                            <a>{{ user.email }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {{ form_label(details.plainPassword, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Repeat Password'}}) }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ form_label(details.rPlainPassword, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.rPlainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Repeat Password'}}) }}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_HR" %}
+                            {{ form_label(details.firstName, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.firstName, {'attr': {'class': 'form-control'}}) }}
+                        {% else %}
+                            <a>{{ user.firstname }}</a>
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-12">
+                        {% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_HR" %}
+                            {{ form_label(details.givenName, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.givenName, {'attr': {'class': 'form-control'}}) }}
+                        {% else %}
+                            <a>{{ user.givenname }} </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_HR" %}
+                    <div class="form-row">
+                        <div class="form-group col-md-9">
+                            {{ form_label(details.streetName, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.streetName, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            {{ form_label(details.streetNumber, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.streetNumber, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            {{ form_label(details.postCode, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.postCode, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group col-md-4">
+                            {{ form_label(details.city, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.city, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <a>{{ user.streetname }} {{ user.streetnumber }}</a>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <a>{{ user.postcode }} {{ user.city }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+                        {% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_HR" %}
+                            {{ form_label(details.phoneNumber, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+                        {% else %}
+                            <a>{{ user.phonenumber }}</a>
+                        {% endif %}
+                    </div>
+                    {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                        <div class='form-group col-md-3'>
+                            {{ form_label(details.roles, null, {'label_attr': {'class': 'sr-only'}}) }}
+                            {{ form_widget(details.roles, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-row">
+                    {% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_HR" %}
+                        <div class="form-group col-md-6">
+                            {{ form_label(details.update) }}
+                            {{ form_widget(details.update, {'attr': {'class': 'w-100 btn btn-primary btn-lg'}}) }}
+                        </div>
+                    {% endif %}
+                    {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                        <div class="form-group col-md-6">
+                            {{ form_label(details.delete) }}
+                            {{ form_widget(details.delete, {'attr': {'class': 'w-100 btn btn-primary btn-lg'}}) }}
+                        </div>
+                    {% endif %}
+                </div>
+                {% if error %}
+                    <div class="alert alert-success">{{ error }}</div>
+                {% endif %}
+            </form>
+        </div>
+    </main>
+    </body>
+{% endblock %}

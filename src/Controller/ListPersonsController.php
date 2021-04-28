@@ -22,6 +22,10 @@ class ListPersonsController extends AbstractController
     #[Route('/list/persons', name: 'list_persons')]
     public function index(Request $request, UserRepository $userRepository): Response
     {
+        if($this->isGranted('ROLE_USER') == false) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $userRepository->getCommentPaginator($offset);
 
