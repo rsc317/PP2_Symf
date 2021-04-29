@@ -5,12 +5,11 @@
     <link rel="stylesheet" href="{{ asset('css/signin.css') }}"
 {% endblock %}
 {% block body %}
+<body class="text-center">
+<main class="form-signin">
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-
-<body class="text-center">
-<main class="form-signin">
     <form method="post">
         {{ form_start(registrationForm) }}
         <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\MainType;
+use App\Form\MyDataForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ class MyDataController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $error = '';
-        $form = $this->createForm(MainType::class, $authenticatedUser);
+        $form = $this->createForm(MyDataForm::class, $authenticatedUser);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $form->get('plainPassword')->getData();

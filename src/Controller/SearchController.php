@@ -22,7 +22,7 @@ class SearchController extends AbstractController
     #[Route('/search', name: 'search')]
     public function index(Request $request, UserRepository $userRepository): Response
     {
-        if($this->isGranted('ROLE_USER') == false) {
+        if ($this->isGranted('ROLE_USER') == false) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -31,11 +31,11 @@ class SearchController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $values = $form->getData();
-            if($users = $userRepository->searchByValueFields($values)) {
-                return new Response($this->twig->render('search/index.html.twig', [
+            if ($users = $userRepository->searchByValueFields($values)) {
+                return $this->render('search/index.html.twig', [
                     'search' => $form->createView(),
                     'users' => $users,
-                ]));
+                ]);
             }
         }
         return $this->render('search/index.html.twig', [

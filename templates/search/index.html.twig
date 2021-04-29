@@ -58,8 +58,10 @@
                     </div>
                     {{ form_end(search) }}
                 </form>
-                <br>
-                {% if users != null %}
+            </div>
+            <div class="container">
+            <br>
+            {% if users != null %}
                 <table class="table table-bordered table-hover" style="width: 1408px;">
                     <th style="text-align: center; " colspan="3">
                         <div class="th-inner ">Search Result</div>
@@ -78,7 +80,7 @@
                         </tr>
                     {% endfor %}
                 </table>
-                    {% endif %}
+            {% endif %}
             </div>
         </main>
         </body>
