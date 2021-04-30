@@ -39,6 +39,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * @param int $offset
+     * @return Paginator
+     *
+     */
     public function getUsersPaginator(int $offset): Paginator
     {
         $query = $this->createQueryBuilder('u')
@@ -50,6 +55,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return new Paginator($query);
     }
 
+    /**
+     * @param $email
+     * @return int|mixed|string|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findByEmailField($email)
     {
         return $this->createQueryBuilder('u')
@@ -59,14 +69,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param array $values
+     * @return array|int|string
+     */
     public function searchByValueFields(array $values): array|int|string
     {
         $query = $this->createQueryBuilder('u');
+        $valuesIsEmpty = true;
         foreach ($values as $key => $value) {
             if (!is_null($value)) {
-                $query->orWhere("u.{$key} = :val")
+                $query
+                    ->orWhere("u.{$key} = :val")
                     ->setParameter('val', $value);
+                $valuesIsEmpty = false;
             }
+        }
+        if($valuesIsEmpty){
+            return false;
         }
         return $query->getQuery()->getArrayResult();
     }

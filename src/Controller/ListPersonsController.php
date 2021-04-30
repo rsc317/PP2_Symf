@@ -19,11 +19,24 @@ class ListPersonsController extends AbstractController
         $this->twig = $twig;
     }
 
+    /**
+     * @Route("/list/persons", name="list_persons")
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     #[Route('/list/persons', name: 'list_persons')]
     public function index(Request $request, UserRepository $userRepository): Response
     {
-        if($this->isGranted('ROLE_USER') == false) {
-            return $this->redirectToRoute('app_login');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if(!$this->getUser()->isVerified()){
+            return $this->render('registration/verify_email.html.twig', [
+                'error' => 'Please check your Emails and verify your Account first'
+            ]);
         }
 
         $offset = max(0, $request->query->getInt('offset', 0));

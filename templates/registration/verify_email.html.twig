@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/signin.css') }}"
+{% endblock %}
+{% block body %}
+    <body class="text-center">
+    <main class="form-signin">
+        {% if error %}
+            <div class="form-floating">
+                <div class="alert alert-danger">{{ error }}</div>
+            </div>
+            <a class="nav-link" href="{{ path("app_logout") }}">Return</a>
+        {% endif %}
+    </main>
+    </body>
+{% endblock %}

@@ -241,6 +241,9 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function isVerified(): bool
     {
         return $this->isVerified;

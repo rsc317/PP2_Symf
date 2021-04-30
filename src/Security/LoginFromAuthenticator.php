@@ -74,10 +74,6 @@ class LoginFromAuthenticator extends AbstractFormLoginAuthenticator implements P
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
-        if(!($user->isVerified())){
-            throw new CustomUserMessageAuthenticationException('Email is not verified.');
-        }
-
         return $user;
     }
 

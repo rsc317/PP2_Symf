@@ -19,11 +19,21 @@ class SearchController extends AbstractController
         $this->twig = $twig;
     }
 
+    /**
+     * @Route("/search", name="search")
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
+     */
     #[Route('/search', name: 'search')]
     public function index(Request $request, UserRepository $userRepository): Response
     {
-        if ($this->isGranted('ROLE_USER') == false) {
-            return $this->redirectToRoute('app_login');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if(!$this->getUser()->isVerified()){
+            return $this->render('registration/verify_email.html.twig', [
+                'error' => 'Please check your Emails and verify your Account first'
+            ]);
         }
 
         $form = $this->createForm(SearchFormType::class);

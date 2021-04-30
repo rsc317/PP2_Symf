@@ -11,13 +11,23 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class MyDataController extends AbstractController
 {
+    /**
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return Response
+     */
     #[Route('/mydata', name: 'mydata')]
     public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $authenticatedUser = $this->getUser();
-        if($this->isGranted('ROLE_USER') == false) {
-            return $this->redirectToRoute('app_login');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if(!$this->getUser()->isVerified()){
+            return $this->render('registration/verify_email.html.twig', [
+                'error' => 'Please check your Emails and verify your Account first'
+            ]);
         }
+
+        $authenticatedUser = $this->getUser();
         $error = '';
         $form = $this->createForm(MyDataForm::class, $authenticatedUser);
         $form->handleRequest($request);

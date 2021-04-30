@@ -12,13 +12,25 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class DetailsController extends AbstractController
 {
+    /**
+     * @param Request $request
+     * @param string $email
+     * @param UserRepository $userRepository
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
 
     #[Route('/details/{email}', name: 'details')]
     public function index(Request $request, string $email, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $error = "";
-        if($this->isGranted('ROLE_USER') == false) {
-            return $this->redirectToRoute('app_login');
+
+        if(!$this->getUser()->isVerified()){
+            return $this->render('registration/verify_email.html.twig', [
+                'error' => 'Please check your Emails and verify your Account first'
+            ]);
         }
 
         if($this->getUser()->getEmail() === $email){
