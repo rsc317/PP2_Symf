@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Web;
 
 use App\Form\DetailsFormType;
 use App\Repository\UserRepository;

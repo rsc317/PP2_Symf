@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Web;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -14,6 +14,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -33,7 +34,7 @@ class RegistrationController extends AbstractController
      * @throws TransportExceptionInterface
      */
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator): Response
     {
         if($this->isGranted('ROLE_USER') !== false) {
             return $this->redirectToRoute('mydata');
@@ -57,6 +58,15 @@ class RegistrationController extends AbstractController
                 );
                 $user->setRoles(['ROLE_USER']);
             }
+            $errors = $validator->validate($user);
+            if (count($errors) > 0) {
+
+                return new Response((string) $errors,200,[
+                    'registrationForm' => $form->createView(),
+                    'success' => null,
+                    'error' => (string) $errors,
+                ]);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -72,13 +82,15 @@ class RegistrationController extends AbstractController
 
             return $this->render('registration/register.html.twig', [
                 'registrationForm' => $form->createView(),
-                'success' => 'Registration successfull, please check your emails and verify your account!'
+                'success' => 'Registration successfull, please check your emails and verify your account!',
+                'error' => null
             ]);
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-            'success' => null
+            'success' => null,
+            'error' => null
         ]);
     }
 

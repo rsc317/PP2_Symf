@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,9 +26,9 @@ class RegistrationFormType extends AbstractType
             ->add('givenName', TextType::class)
             ->add('streetName', TextType::class)
             ->add('streetNumber', TextType::class)
-            ->add('post_code', TextType::class)
+            ->add('post_code', NumberType::class)
             ->add('city', TextType::class)
-            ->add('phoneNumber', TextType::class)
+            ->add('phoneNumber', NumberType::class)
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
