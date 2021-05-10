@@ -62,15 +62,15 @@
             <div class="container">
             <br>
             {% if users != null %}
-                <table class="table table-bordered table-hover" style="width: 1408px;">
-                    <th style="text-align: center; " colspan="3">
+                <table class="table table-bordered table-hover">
+                    <th scope="col" colspan="3" style="text-align: center">
                         <div class="th-inner ">Search Result</div>
                         <div class="fht-cell"></div>
                     </th>
                     <tr>
-                        <th style="text-align: center">E-Mail</th>
-                        <th style="text-align: center">First Name</th>
-                        <th style="text-align: center">Given Name</th>
+                        <th scope="col" style="text-align: center">E-Mail</th>
+                        <th scope="col" style="text-align: center">First Name</th>
+                        <th scope="col" style="text-align: center">Given Name</th>
                     </tr>
                     {% for user in users %}
                         <tr>
