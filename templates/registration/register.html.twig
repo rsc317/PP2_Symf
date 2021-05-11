@@ -54,6 +54,11 @@
             {{ form_label(registrationForm.agreeTerms) }}
             {{ form_widget(registrationForm.agreeTerms) }}
         </div>
+        {% for error in errors %}
+        <div class="form-floating">
+            <div class="alert alert-danger">{{ error.message }}</div>
+        </div>
+        {% endfor %}
         <div class="form-floating">
             {{ form_label(registrationForm.register) }}
             {{ form_widget(registrationForm.register, {'attr': {'class': 'btn btn-lg btn-primary btn-block'}}) }}

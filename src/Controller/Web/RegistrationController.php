@@ -61,10 +61,9 @@ class RegistrationController extends AbstractController
             $errors = $validator->validate($user);
             if (count($errors) > 0) {
 
-                return new Response((string) $errors,200,[
-                    'registrationForm' => $form->createView(),
+                return $this->render('registration/register.html.twig',[
                     'success' => null,
-                    'error' => (string) $errors,
+                    'errors' => $errors,
                 ]);
             }
             $entityManager = $this->getDoctrine()->getManager();
@@ -83,14 +82,14 @@ class RegistrationController extends AbstractController
             return $this->render('registration/register.html.twig', [
                 'registrationForm' => $form->createView(),
                 'success' => 'Registration successfull, please check your emails and verify your account!',
-                'error' => null
+                'errors' => null
             ]);
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
             'success' => null,
-            'error' => null
+            'errors' => null
         ]);
     }
 

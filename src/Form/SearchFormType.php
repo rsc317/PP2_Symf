@@ -3,8 +3,8 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,7 +32,7 @@ class SearchFormType extends AbstractType
             ->add('phone_number', TextType::class, [
                 'required' => false,
             ])
-            ->add('search', SubmitType::class);
+            ->add('search', ButtonType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

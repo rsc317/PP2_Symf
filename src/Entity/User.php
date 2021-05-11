@@ -23,7 +23,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank
+     * @Assert\NotNull
      * @Assert\Email
      */
     private $email;
@@ -41,57 +41,78 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotNull
      * * @Assert\Length(
      *      min = 2,
      *      max = 50,
      *      minMessage = "Your first name must be at least {{ limit }} characters long",
      *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
      * )
+     * @Assert\Regex(pattern="/^\pL+$/u",
+     *     match=true,
+     *     message="Your name cannot contain a number")
      */
     private $first_name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * * @Assert\Length(
+     * @Assert\NotNull
+     * @Assert\Length(
      *      min = 2,
      *      max = 50,
      *      minMessage = "Your first name must be at least {{ limit }} characters long",
      *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Regex(
+     *     pattern="/^\pL+$/u",
+     *     match=true,
+     *     message="Your name cannot contain a number"
      * )
      */
     private $given_name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="/^\pL+$/u",
+     *     match=true,
+     *     message="Your name cannot contain a number"
+     * )
      */
     private $street_name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotNull
      */
     private $street_number;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Regex("/^\d+$/")
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="/^\d+$/",
+     *     match=true,
+     *     message="Streetnumber cannot contain a Letter"
+     * )
      */
     private $post_code;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotNull
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Regex("/^\d+$/")
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="/^\d+$/",
+     *     match=true,
+     *     message="Phonenumber cannot contain a Letter"
+     * )
      */
     private $phone_number;
 

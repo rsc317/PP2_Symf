@@ -39,15 +39,15 @@ class SearchController extends AbstractController
         $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $values = $form->getData();
-            if ($users = $userRepository->searchByValueFields($values)) {
-                return $this->render('search/index.html.twig', [
-                    'search' => $form->createView(),
-                    'users' => $users,
-                ]);
-            }
-        }
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $values = $form->getData();
+//            if ($users = $userRepository->searchByValueFields($values)) {
+//                return $this->render('search/index.html.twig', [
+//                    'search' => $form->createView(),
+//                    'users' => $users,
+//                ]);
+//            }
+//        }
         return $this->render('search/index.html.twig', [
             'search' => $form->createView(),
             'users' => null,

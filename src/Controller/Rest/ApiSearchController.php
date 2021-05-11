@@ -17,6 +17,11 @@ class ApiSearchController extends AbstractFOSRestController
     {
         $values = json_decode($request->getContent(), true);
 
+        foreach ($values as $key => $value) {
+            if ("" === trim($value)) {
+                unset($values[$key]);
+            }
+        }
         if (null != $values && $users = $userRepository->searchByValueFields($values)) {
             return new JsonResponse(json_encode($users, true),202);
         }
