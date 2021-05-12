@@ -58,14 +58,7 @@ class RegistrationController extends AbstractController
                 );
                 $user->setRoles(['ROLE_USER']);
             }
-            $errors = $validator->validate($user);
-            if (count($errors) > 0) {
-
-                return $this->render('registration/register.html.twig',[
-                    'success' => null,
-                    'errors' => $errors,
-                ]);
-            }
+            $validator->validate($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

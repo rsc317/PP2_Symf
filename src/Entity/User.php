@@ -42,6 +42,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotNull
+     * @Assert\NotBlank
      * * @Assert\Length(
      *      min = 2,
      *      max = 50,

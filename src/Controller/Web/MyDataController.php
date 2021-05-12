@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MyDataController extends AbstractController
 {
@@ -17,42 +18,47 @@ class MyDataController extends AbstractController
      * @return Response
      */
     #[Route('/mydata', name: 'mydata')]
-    public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if(!$this->getUser()->isVerified()){
+        if (!$this->getUser()->isVerified()) {
             return $this->render('registration/verify_email.html.twig', [
-                'error' => 'Please check your Emails and verify your Account first'
+                'errors' => 'Please check your Emails and verify your Account first'
             ]);
         }
-
         $authenticatedUser = $this->getUser();
-        $error = '';
         $form = $this->createForm(MyDataForm::class, $authenticatedUser);
+        $user = $form->getData();
+        $validator->validate($user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $plainPassword = $form->get('plainPassword')->getData();
-            $repeatPassword = $form->get('rPlainPassword')->getData();
-            if($plainPassword && $repeatPassword){
-                if($plainPassword === $repeatPassword){
-                    $user = $form->getData();
+            $password = $form->get('password')->getData();
+            $rPassword = $form->get('rPassword')->getData();
+            if ($password && $rPassword) {
+                if ($password === $rPassword) {
                     $user->setPassword(
                         $passwordEncoder->encodePassword(
                             $user,
-                            $form->get('plainPassword')->getData()
+                            $password
                         )
                     );
                 }
             }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
-            $error = "Update successfully";
+
+            return $this->render('main/index.html.twig', [
+                'main' => $form->createView(),
+                'success' => "Update successfully",
+                'errors' => null
+            ]);
         }
 
         return $this->render('main/index.html.twig', [
             'main' => $form->createView(),
-            'error' => $error,
+            'success' => null,
+            'errors' => null
         ]);
     }
 }

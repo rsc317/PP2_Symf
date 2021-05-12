@@ -23,30 +23,24 @@ class MyDataForm extends AbstractType
             ->add('post_code')
             ->add('city')
             ->add('phoneNumber')
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+            ->add('password', PasswordType::class, [
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],
             ])
-            ->add('rPlainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+            ->add('rPassword', PasswordType::class, [
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],

@@ -2,7 +2,11 @@
 
 {% block title %}Register{% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/signin.css') }}"
+    <link rel="stylesheet" href="{{ asset('css/signin.css') }}">
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/validateInput.js') }}"></script>
 {% endblock %}
 {% block body %}
 <body class="text-center">
@@ -12,56 +16,54 @@
         <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>
         <div class="form-floating">
             {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'sr-only'}}) }}
-            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder' : 'Email', 'type': 'email'}}) }}
+            {{ form_widget(registrationForm.email, {'id': 'email','attr': {'class': 'form-control', 'placeholder' : 'Email', 'type': 'email', 'onkeyup' : 'invalidEmail("email")'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.plainPassword, null, {'label_attr': {'class': 'sr-only'}})  }}
-            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder' : 'Password'}}) }}
+            {{ form_widget(registrationForm.plainPassword, {'id': 'password','attr': {'class': 'form-control', 'placeholder' : 'Password', 'onkeyup' : 'invalidPassword("password")'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.repeatPassword , null, {'label_attr': {'class': 'sr-only'}})  }}
-            {{ form_widget(registrationForm.repeatPassword, {'attr': {'class': 'form-control', 'placeholder' : 'Repeat Password'}}) }}
+            {{ form_widget(registrationForm.repeatPassword, {'id': 'r_password','attr': {'class': 'form-control', 'placeholder' : 'Repeat Password', 'onkeyup' : 'matchPasswords("password", "r_password")'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.firstName, null, {'label_attr': {'class': 'sr-only'}})  }}
-            {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control', 'placeholder' : 'Firstname'}}) }}
+            {{ form_widget(registrationForm.firstName, {'id': 'first_name', 'attr': {'class': 'form-control', 'placeholder' : 'Firstname', 'onkeyup' : 'invalidName("first_name")'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.givenName, null, {'label_attr': {'class': 'sr-only'}})  }}
-            {{ form_widget(registrationForm.givenName, {'attr': {'class': 'form-control', 'placeholder' : 'Givenname'}}) }}
+            {{ form_widget(registrationForm.givenName, {'id': 'given_name','attr': {'class': 'form-control', 'placeholder' : 'Givenname', 'onkeyup' : 'invalidName("given_name")'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.streetName, null, {'label_attr': {'class': 'sr-only'}}) }}
-            {{ form_widget(registrationForm.streetName, {'attr': {'class': 'form-control', 'placeholder' : 'Streetname'}}) }}
+            {{ form_widget(registrationForm.streetName, {'id': 'street_name','attr': {'class': 'form-control', 'placeholder' : 'Streetname', 'onkeyup' : 'invalidName("street_name")'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.streetNumber, null, {'label_attr': {'class': 'sr-only'}})  }}
-            {{ form_widget(registrationForm.streetNumber, {'attr': {'class': 'form-control', 'placeholder' : 'Streetnumber'}}) }}
+            {{ form_widget(registrationForm.streetNumber, {'id': 'street_number','attr': {'class': 'form-control', 'placeholder' : 'Streetnumber'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.post_code, null, {'label_attr': {'class': 'sr-only'}}) }}
-            {{ form_widget(registrationForm.post_code, {'attr': {'class': 'form-control', 'placeholder' : 'Postcode'}}) }}
+            {{ form_widget(registrationForm.post_code, {'id': 'post_code','attr': {'class': 'form-control', 'placeholder' : 'Postcode', 'onkeyup' : 'invalidNumber("post_code")'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.city, null, {'label_attr': {'class': 'sr-only'}}) }}
-            {{ form_widget(registrationForm.city, {'attr': {'class': 'form-control', 'placeholder' : 'City'}}) }}
+            {{ form_widget(registrationForm.city, {'id': 'city','attr': {'class': 'form-control', 'placeholder' : 'City'}}) }}
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.phoneNumber, null, {'label_attr': {'class': 'sr-only'}}) }}
-            {{ form_widget(registrationForm.phoneNumber, {'attr': {'class': 'form-control', 'placeholder' : 'Phonenumber'}}) }}
+            {{ form_widget(registrationForm.phoneNumber, {'id': 'phone_number','attr': {'class': 'form-control', 'placeholder' : 'Phonenumber', 'onkeyup' : 'invalidNumber("phone_number")'}}) }}
+        </div>
+        <div class="form-floating" id="error">
+
         </div>
         <div class="form-floating">
             {{ form_label(registrationForm.agreeTerms) }}
             {{ form_widget(registrationForm.agreeTerms) }}
         </div>
-        {% for error in errors %}
-        <div class="form-floating">
-            <div class="alert alert-danger">{{ error.message }}</div>
-        </div>
-        {% endfor %}
         <div class="form-floating">
             {{ form_label(registrationForm.register) }}
-            {{ form_widget(registrationForm.register, {'attr': {'class': 'btn btn-lg btn-primary btn-block'}}) }}
+            {{ form_widget(registrationForm.register, {'id': 'register','attr': {'class': 'btn btn-lg btn-primary btn-block'}}) }}
         </div>
         <p class="mt-5 mb-3 text-muted text-center">Already have an account?</p>
         <a class="nav-link" href="{{ path("app_login") }}">Log in Here</a>
