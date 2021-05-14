@@ -57,10 +57,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * @param $email
-     * @return int|mixed|string|null
+     * @return User|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findByEmailField($email)
+    public function findByEmailField($email): ?User
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.email = :val')
@@ -91,4 +91,5 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
         return $query->getQuery()->getArrayResult();
     }
+
 }

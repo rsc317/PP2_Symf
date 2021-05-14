@@ -2,6 +2,7 @@
 
 namespace App\Controller\Web;
 
+use App\Entity\ApiToken;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
@@ -62,7 +63,8 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-
+            $entityManager->persist(new ApiToken($user));
+            $entityManager->flush();
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())

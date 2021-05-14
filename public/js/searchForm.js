@@ -7,7 +7,7 @@ async function searchForUsers() {
     let phoneNumber = document.getElementById('search_form_phone_number').value
 
     document.getElementById('table_container').innerHTML = ""
-
+    let token = document.getElementById('token').dataset.token
     const paramBody = {
         email: email,
         first_name: firstName,
@@ -21,11 +21,12 @@ async function searchForUsers() {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
         },
         body: JSON.stringify(paramBody)
     };
     try {
-        const fetchResponse = await fetch(`http://pp2sf.local/api/postSearch`, settings);
+        const fetchResponse = await fetch(`http://pp2sf.local/api/search`, settings);
         let jsonRespons = await fetchResponse.json();
         let body = JSON.parse(jsonRespons);
         if (204 === fetchResponse.status) {

@@ -21,10 +21,13 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFromAuthenticator
+                    #- App\Security\ApiTokenAuthenticator
+            entry_point: App\Security\LoginFromAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout
                 target: app_login
+            #custom_authenticator: App\Security\ApiTokenAuthenticator
             #pattern: ^/
             #user_checker: App\Security\UserChecker
             # activate different ways to authenticate
@@ -38,3 +41,4 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        # - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }

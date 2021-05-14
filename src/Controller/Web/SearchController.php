@@ -3,6 +3,7 @@
 namespace App\Controller\Web;
 
 use App\Form\SearchFormType;
+use App\Repository\ApiTokenRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,7 @@ class SearchController extends AbstractController
      * @return Response
      */
     #[Route('/search', name: 'search')]
-    public function index(Request $request, UserRepository $userRepository): Response
+    public function index(Request $request, ApiTokenRepository $apiTokenRepository, UserRepository $userRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -36,21 +37,24 @@ class SearchController extends AbstractController
             ]);
         }
 
+        $user = $userRepository->findByEmailField($this->getUser()->getUsername());
+        $userId = $user->getId();
+
+        if($token = $apiTokenRepository->findOneById($userId)){
+            if($token->isExpired()){
+                $token->renewExpiresAt();
+            }
+        }
+        else{
+            $apiTokenRepository->insertApiToken($this->getUser());
+        }
+
         $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($request);
 
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $values = $form->getData();
-//            if ($users = $userRepository->searchByValueFields($values)) {
-//                return $this->render('search/index.html.twig', [
-//                    'search' => $form->createView(),
-//                    'users' => $users,
-//                ]);
-//            }
-//        }
         return $this->render('search/index.html.twig', [
             'search' => $form->createView(),
-            'users' => null,
+            'token' => $token->getToken()
         ]);
     }
 }
