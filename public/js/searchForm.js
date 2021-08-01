@@ -8,7 +8,7 @@ async function searchForUsers() {
 
     document.getElementById('table_container').innerHTML = ""
     let token = document.getElementById('token').dataset.token
-    const paramBody = {
+    const PARAMBODY = {
         email: email,
         first_name: firstName,
         given_name: givenName,
@@ -16,32 +16,33 @@ async function searchForUsers() {
         city: city,
         phone_number: phoneNumber
     }
-    const settings = {
+    const SETTINGS = {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token,
         },
-        body: JSON.stringify(paramBody)
+        body: JSON.stringify(PARAMBODY)
     };
+    const SEARCHAPI = "http://pp2sf.local/api/search"
+
     try {
-        const fetchResponse = await fetch(`http://pp2sf.local/api/search`, settings);
-        let jsonRespons = await fetchResponse.json();
-        let body = JSON.parse(jsonRespons);
-        if (204 === fetchResponse.status) {
-            document.getElementById('table_container').innerHTML = "<div class=\"alert alert-warning\">No match found</div>"
-        } else {
-            let table = "<table class=\"table table-bordered table-hover\">\n" +
-                "           <th scope=\"col\" colspan=\"3\" style=\"text-align: center\">\n" +
-                "               <div class=\"th-inner \">Search Result</div>\n" +
-                "               <div class=\"fht-cell\"></div>\n" +
-                "           </th>\n" +
-                "            <tr>\n" +
-                "               <th scope=\"col\" style=\"text-align: center\">E-Mail</th>\n" +
-                "               <th scope=\"col\" style=\"text-align: center\">First Name</th>\n" +
-                "               <th scope=\"col\" style=\"text-align: center\">Given Name</th>\n" +
-                "            </tr>"
+        const FETCHRESPONSE = await fetch(SEARCHAPI, SETTINGS);
+        if (202 === FETCHRESPONSE.status) {
+            let jsonRespons = await FETCHRESPONSE.json();
+            let body = JSON.parse(jsonRespons);
+            let table =
+                "<table class=\"table table-bordered table-hover\">\n" +
+                "    <th scope=\"col\" colspan=\"3\" style=\"text-align: center\">\n" +
+                "        <div class=\"th-inner \">Search Result</div>\n" +
+                "        <div class=\"fht-cell\"></div>\n" +
+                "    </th>\n" +
+                "    <tr>\n" +
+                "        <th scope=\"col\" style=\"text-align: center\">E-Mail</th>\n" +
+                "        <th scope=\"col\" style=\"text-align: center\">First Name</th>\n" +
+                "        <th scope=\"col\" style=\"text-align: center\">Given Name</th>\n" +
+                "    </tr>"
 
             for (let user of body) {
                 table += `<tr>
@@ -52,8 +53,13 @@ async function searchForUsers() {
             }
             table += "</table>";
             document.getElementById('table_container').innerHTML = table;
+        } else if(204 === FETCHRESPONSE.status) {
+            document.getElementById('table_container').innerHTML =
+                "<div class=\"alert alert-warning\">No match found</div>"
+        } else {
+            document.getElementById('table_container').innerHTML =
+                "<div class=\"alert alert-warning\">Something went wrong</div>"
         }
-
     } catch (e) {
         return e;
     }

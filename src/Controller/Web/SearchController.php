@@ -42,7 +42,7 @@ class SearchController extends AbstractController
 
         if($token = $apiTokenRepository->findOneById($userId)){
             if($token->isExpired()){
-                $token->renewExpiresAt();
+                $apiTokenRepository->renewToken($token);
             }
         }
         else{

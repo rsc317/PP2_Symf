@@ -52,6 +52,12 @@ class ApiTokenRepository extends ServiceEntityRepository
         return $apiToken;
     }
 
+    public function renewToken(ApiToken $apiToken){
+        $apiToken->renewExpiresAt();
+        $this->_em->persist($apiToken);
+        $this->_em->flush();
+    }
+
     public function hasBearerAuthorization(Request $request)
     {
         return (!$request->headers->has('Authorization') && !str_starts_with($request->headers->get('Authorization'), 'Bearer '));
